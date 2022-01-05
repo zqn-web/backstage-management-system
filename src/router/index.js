@@ -48,6 +48,26 @@ export default new Router({
           component: () => import('@/components/students/infoList')
         }
       ]
+    },
+    {
+      path: '/home',
+      name: '数据分析',
+      iconClass: 'fa fa-bar-chart',
+      component: () => import('@/components/Home'),
+      children: [
+        {
+          path: '/home/dataview',
+          name: '数据概览',
+          iconClass: 'fa fa-line-chart',
+          component: () => import('@/components/dataAnalysis/dataOverView')
+        },
+        {
+          path: '/home/mapdata',
+          name: '地图概览',
+          iconClass: 'fa fa-map-marker',
+          component: () => import('@/components/dataAnalysis/mapData')
+        }
+      ]
     }
   ],
   mode: 'history'

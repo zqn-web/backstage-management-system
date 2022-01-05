@@ -2,7 +2,8 @@
   <div class="header">
     <el-header>
       <div class="title">管理系统</div>
-      <div>qianan</div>
+      <!-- <div>qianan</div> -->
+      <div>{{name}}2</div>
     </el-header>
   </div>
 </template>
@@ -12,8 +13,11 @@ export default {
   name: 'Header',
   data () {
     return {
-
+      name: ''
     }
+  },
+  created () {
+    this.name = localStorage.getItem('userName')
   },
   methods: {
 

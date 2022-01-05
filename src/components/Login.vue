@@ -58,7 +58,22 @@ export default {
     login (form) {
       this.$refs[form].validate((valid) => {
         if (valid) {
-          this.$router.push('/home')
+          // this.axios.post('http://rap2api.taobao.org/app/mock/296833/login', this.form)
+          this.service.post('/login', this.form)
+            .then(res => {
+              console.log('res', res)
+              if (res.data.status === 200) {
+                localStorage.setItem('userName', res.data.userName)
+                this.$router.push('/home')
+                this.$message({
+                  message: res.data.message,
+                  type: 'success'
+                })
+              }
+            })
+            .catch(err => {
+              console.error('err', err)
+            })
         } else {
           console.error(this.form)
         }

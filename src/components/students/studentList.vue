@@ -144,12 +144,26 @@ export default {
       this.$refs[form].validate((valid) => {
         if (valid) {
           // 调用新增信息接口
-          console.log('form', this.form)
-          this.tableData.push(this.form)
-          this.dialogFormVisible = false
-          this.form = {}
+          // console.log('form', this.form)
+          // this.tableData.push(this.form)
+          // this.dialogFormVisible = false
+          // this.form = {}
           if (this.state) {
             // 调用新增接口
+            this.service.post('/students', this.form)
+              .then(res => {
+                console.log('res', res)
+                this.service.get('/students')
+                  .then(res => {
+                    console.log(res)
+                  })
+                  .catch(err => {
+                    console.log(err)
+                  })
+              })
+              .catch(err => {
+                console.error('err', err)
+              })
           } else {
             // 调用修改接口
           }

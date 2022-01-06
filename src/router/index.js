@@ -66,6 +66,18 @@ export default new Router({
           name: '地图概览',
           iconClass: 'fa fa-map-marker',
           component: () => import('@/components/dataAnalysis/mapData')
+        },
+        {
+          path: '/home/maptwo',
+          name: '出行地图',
+          iconClass: 'fa fa-plane',
+          component: () => import('@/components/dataAnalysis/mapTwo')
+        },
+        {
+          path: '/home/mapthree',
+          name: '分数地图',
+          iconClass: 'fa fa-map-pin',
+          component: () => import('@/components/dataAnalysis/mapThree')
         }
       ]
     }

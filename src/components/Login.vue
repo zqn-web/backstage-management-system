@@ -62,14 +62,14 @@ export default {
           this.service.post('/login', this.form)
             .then(res => {
               console.log('res', res)
-              if (res.data.status === 200) {
-                localStorage.setItem('userName', res.data.userName)
-                this.$router.push('/home')
-                this.$message({
-                  message: res.data.message,
-                  type: 'success'
-                })
-              }
+              // if (res.data.status === 200) {
+              //   localStorage.setItem('userName', res.data.userName)
+              //   this.$router.push('/home')
+              //   this.$message({
+              //     message: res.data.message,
+              //     type: 'success'
+              //   })
+              // }
             })
             .catch(err => {
               console.error('err', err)

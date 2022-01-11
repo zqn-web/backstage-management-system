@@ -124,7 +124,22 @@ export default {
       }
     }
   },
+  created () {
+    this.getData()
+  },
   methods: {
+    getData () {
+      this.service.get('/students')
+        .then(res => {
+          if (res.status === 200) {
+            console.log(res)
+            this.tableData = [...res.data]
+          }
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
     updataInfo (row) {
       console.log('row', row)
       this.state = false
@@ -153,13 +168,21 @@ export default {
             this.service.post('/students', this.form)
               .then(res => {
                 console.log('res', res)
-                this.service.get('/students')
-                  .then(res => {
-                    console.log(res)
-                  })
-                  .catch(err => {
-                    console.log(err)
-                  })
+                if (res.status === 201) {
+                  // 关闭弹框
+                  this.dialogFormVisible = false
+                  // 清空表单
+                  this.form = {}
+                  // this.service.get('/students')
+                  //   .then(res => {
+                  //     console.log(res)
+                  //     this.tableData = [...res.data]
+                  //   })
+                  //   .catch(err => {
+                  //     console.log(err)
+                  //   })
+                  this.getData()
+                }
               })
               .catch(err => {
                 console.error('err', err)

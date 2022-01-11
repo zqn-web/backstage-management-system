@@ -3,7 +3,9 @@ import axios from 'axios'
 // 自定义配置新建一个实例
 const service = axios.create({
   // baseURL会自动加在接口地址上
+  // 开始是直接写的地址
   // baseURL: 'http://demo.crudapi.cn/api/business',
+  // 当解决跨域时，设置转发后，将baseURL改为 '/api'
   baseURL: '/api',
   // 指定请求毫秒数，如果请求超过这个时间，请求会中断
   timeout: 3000,
@@ -11,6 +13,7 @@ const service = axios.create({
     'Content-type': 'application/json;charset=utf-8'
     // 'cookie': 'SESSION=MGEwOGZlNzMtZmRkNS00YTkxLWE2MmQtNjRmZDA4NTUzZWZl'
   },
+  // 'auth'表示使用HTTP做基础验证，并提供凭据
   auth: {
     username: 'superadmin',
     password: '1234567890'

@@ -13,11 +13,11 @@ module.exports = {
     proxyTable: {
       '/api': {
         target: 'http://demo.crudapi.cn/api/business',
+        // 允许跨域
         changeOrigin: true,
         pathRewrite: {
           '^api': ''
         }
-
       }
     },
 

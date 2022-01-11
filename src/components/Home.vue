@@ -38,6 +38,7 @@ export default {
     }
   },
   created () {
+    console.log('rote', this.$route)
   },
   methods: {
   }

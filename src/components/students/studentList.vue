@@ -14,6 +14,9 @@
       <el-form-item>
         <el-button type="primary" @click="find">查询</el-button>
       </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="reset">重置</el-button>
+      </el-form-item>
     </el-form>
     <!-- 表格 -->
     <el-table :data="tableData" border style="width: 100%">
@@ -144,16 +147,49 @@ export default {
       console.log('row', row)
       this.state = false
       this.dialogFormVisible = true
-      this.form = row
+      // 直接赋值会在修改还未保存时，页面会联动跟着修改
+      // this.form = row
+      // 使用对象解构赋值可解决上述问题
+      this.form = {...row}
     },
-    del () {
-
+    del (row) {
+      this.$alert('你确定要删除该数据吗？', '提示', {
+        confirmButtonText: '确定',
+        callback: () => {
+          this.service.delete('/students/' + row.id)
+            .then(res => {
+              this.$message({
+                message: '删除数据成功',
+                type: 'success'
+              })
+            })
+            .catch(err => {
+              console.log(err)
+            })
+        }
+      })
+      console.log(row)
     },
     addStudent () {
       this.dialogFormVisible = true
     },
     find () {
-
+      console.log(this.formInline)
+      this.service.get('/students', {
+        params: this.formInline
+      })
+        .then(res => {
+          console.log(res)
+          this.tableData = [...res.data]
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    },
+    // 重置
+    reset () {
+      this.getData()
+      this.formInline = {}
     },
     sure (form) {
       this.$refs[form].validate((valid) => {
@@ -171,8 +207,15 @@ export default {
                 if (res.status === 201) {
                   // 关闭弹框
                   this.dialogFormVisible = false
-                  // 清空表单
-                  this.form = {}
+                  // 清空表单，全部清空再次新加会校验报红
+                  // this.form = {}
+                  // 使用elementUI重置表单
+                  this.$refs[form].resetFields()
+                  // 提示
+                  this.$message({
+                    message: '新增数据成功',
+                    type: 'success'
+                  })
                   // this.service.get('/students')
                   //   .then(res => {
                   //     console.log(res)
@@ -180,7 +223,7 @@ export default {
                   //   })
                   //   .catch(err => {
                   //     console.log(err)
-                  //   })
+                  //   }) 用getData()代替
                   this.getData()
                 }
               })
@@ -189,6 +232,30 @@ export default {
               })
           } else {
             // 调用修改接口
+            // console.log(this.form.id)
+            // 在页面删除时只能删除一次，再次删除报500服务器端错误
+            // 在传参时默认传递的参数都修改，但是创建时间和最后修改时间不允许修改
+            // 解决：删除更新时间和修改时间，传参时不传
+            delete this.form.createdDate
+            delete this.form.lastModifiedDate
+            console.log(this.form)
+            this.service.patch('/students' + this.form.id, this.form)
+              .then(res => {
+                // 关闭弹框
+                this.dialogFormVisible = false
+                // 清空表单
+                this.form = {}
+                // 调用接口
+                this.getData()
+                // 提示
+                this.$message({
+                  message: '修改数据成功',
+                  type: 'success'
+                })
+              })
+              .catch(err => {
+                console.error(err)
+              })
           }
         } else {
           console.error('error', this.form)
